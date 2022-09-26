@@ -23,16 +23,16 @@ export default async function handler(req, res) {
 }
 
 async function create(req, res) {
-  console.log(req.method);
   try {
     const validatedUser = User.parse(req.body);
+    const hashedPassword = hashPassword(validatedUser.password);
     const savedUser = await prisma.user.create({
       data: {
         ...validatedUser,
-        password: hashPassword(validatedUser.password),
+        password: hashedPassword,
       },
     });
-    return res.status(200).json(savedUser);
+    return res.status(201).json({ message: "Signup succesfull " });
   } catch (error) {
     if (isRequestValidationError(error)) {
       return handleValidationError(res, error);

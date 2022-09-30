@@ -46,7 +46,7 @@ async function login(req, res) {
 }
 
 function signJWT(user) {
-  return jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+  return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1s" });
 }
 
 function handleAuthError(res) {
@@ -59,7 +59,7 @@ export default async function handler(req, res) {
       return login(req, res);
 
     default:
-      return res.status(404).json({ message: "This route does not exist" });
+      return res.status(406).json({ message: "This method is not supported" });
   }
 }
 
